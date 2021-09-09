@@ -10,6 +10,8 @@ app.use(cors());
 
 app.use('/baiHoc2', baiHoc2Routes);		        //bảo Router chỉ nhận câu hỏi bắt đầu ‘/hanhDong
 
+let tenVaDiaChiModel = require('./ten-va-dia-chi.model');
+
 const mongoose = require('mongoose');     //phải mượn Mongoose
 
 const PORT = 5600;
@@ -42,6 +44,21 @@ baiHoc2Routes.route('/doAn').get(function(req, res) {
 })
 
 baiHoc2Routes.route('/thanhPho').get(function(req, res) {
+
+  let nameThanhPho = req.query.nameThanhPho
+  console.log(nameThanhPho)
   // res.send('câu trả lời / của router');
-  console.log('câu trả lời thanhPho của router')
+  // console.log('câu trả lời thanhPho của router')
+
+  tenVaDiaChiModel.find({}, function(err, timThanhPho){
+    if (err) {
+      console.log(err);
+      res.json('Không kết nối với MongoDB')
+    }
+    else {
+      console.log('đã tìm thấy ' + timThanhPho.length + ' Thanh Pho')
+      res.json(timThanhPho)
+    }
+  }).sort({[nameThanhPho]:1, name:1})
+
 })
