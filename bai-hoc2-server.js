@@ -56,9 +56,41 @@ baiHoc2Routes.route('/thanhPho').get(function(req, res) {
       res.json('Không kết nối với MongoDB')
     }
     else {
-      console.log('đã tìm thấy ' + timThanhPho.length + ' Thanh Pho')
+      // console.log('đã tìm thấy ' + timThanhPho.length + ' Thanh Pho')
       res.json(timThanhPho)
     }
   }).sort({[nameThanhPho]:1, name:1})
 
 })
+
+
+baiHoc2Routes.route('/thanhPho/TP').get(function(req, res) {
+
+  let chonThanhPhoName = req.query.chonThanhPhoName
+  console.log(chonThanhPhoName)
+
+  if(chonThanhPhoName = 'All'){
+    console.log(chonThanhPhoName)
+
+    tenVaDiaChiModel.find({}, function(err, timThanhPho){
+      if (err) {
+        console.log(err);
+        res.json('Không kết nối với MongoDB')
+      }
+      else {
+        console.log('đã tìm thấy ' + timThanhPho.length + ' Thanh Pho')
+      }
+    }).sort({[nameThanhPho]:1, name:1})
+
+  }
+  else{
+    console.log('Tìm thành phố trong '+chonThanhPhoName)
+    tenVaDiaChiModel.find({chonThanhPhoName: chonThanhPhoName}, function(err, timThanhPhoKhac){
+      // res.json(timThanhPhoKhac)
+      console.log(timThanhPhoKhac)
+    })
+  }
+
+})
+
+
